@@ -13,9 +13,12 @@ from adafruit_motor import servo
 
 def setup():
     GPIO.setmode(GPIO.BCM)
-    i2c_bus = busio.I2C(SCL, SDA)
-    pwm = PCA9685(i2c_bus)  # 使用默认地址初始化PWM设备
-    pwm.frequency = 50
+    try:
+        i2c_bus = busio.I2C(SCL, SDA)
+        pwm = PCA9685(i2c_bus)  # 使用默认地址初始化PWM设备
+        pwm.frequency = 50
+    except ValueError:
+        print('No i2c device is detected')
     # 创建一个级联分类器 加载一个 .xml 分类器文件. 它既可以是Haar特征也可以是LBP特征的分类器.
     face_cascade = cv.CascadeClassifier('/home/tony/.local/lib/python3.9/site-packages/cv2/data'
                                         '/haarcascade_frontalface_default.xml')
